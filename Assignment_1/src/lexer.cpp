@@ -4,7 +4,7 @@
 
 using namespace std;
 
-bool isKeyword(const string& lexeme)
+bool isIdentifier(const string& lexeme)
 {
     int state = 0;
     
