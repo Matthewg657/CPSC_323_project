@@ -23,7 +23,7 @@ bool isIdentifier(const string& lexeme)
             break;
 
             case 1:
-            if (isalnumch(ch) || ch == '_')
+            if (isalnum(ch) || ch == '_')
             {
                 state =1;
             }
@@ -56,7 +56,7 @@ bool isKeyword(const string& lexeme)
         "false",
     };
 
-    for (const string& keyworkd : keywords)
+    for (const string& keyword : keywords)
     {
         if (lexeme == keyword)
         {
@@ -64,4 +64,101 @@ bool isKeyword(const string& lexeme)
         }
     }
     return false;
+}
+bool isInteger(const string& lexeme)
+{
+    int state = 0;
+    for (char ch : lexeme)
+    {
+        switch (state)
+        {
+            case 0:
+            if (isdigit(ch))
+            {
+                state = 1;
+            }
+            else
+            {
+                return false;
+            }
+            break;
+
+             case 1:
+        if (isdigit(ch))
+        {
+            state = 1;
+        }
+        else
+        {
+            return false;
+        }
+        break;
+        }
+    }
+    return state == 1;
+}
+
+bool isReal(const string& lexeme)
+{
+    int state = 0;
+
+    for (char ch : lexeme)
+    {
+        switch (state)
+        {
+            case 0:
+            if (isdigit(ch))
+            {
+                state = 1;
+            }
+            else if (ch == '.')
+            {
+                state = 2;
+            }
+            else
+            {
+                return false;
+            }
+            break;
+
+            case 1:
+            if (isdigit(ch))
+            {
+                state = 1;
+            }
+            else if (ch == '.')
+            {
+                state = 2;
+            }
+            else
+            {
+                return false;
+            }
+            break;
+
+            case 2:
+            if (isdigit(ch))
+            {
+                state = 3;
+            }
+            else
+            {
+                return false;
+            }
+            break;
+
+            case 3:
+        if (isdigit(ch))
+        {
+            state = 3;
+        }
+        else
+        {
+            return false;
+        }
+        break;
+        }
+
+    }
+    return state == 3;
 }

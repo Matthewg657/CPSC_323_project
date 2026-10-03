@@ -15,6 +15,11 @@ struct Token
     string lexeme;
 };
 
+bool isIdentifier(const string& lexeme);
+bool isKeyword(const string& lexeme);
+bool isInteger(const string& lexeme);
+bool isReal(const string& lexeme);
+
 //Reads the input file and returns the next token
 //function declaration that takes in ifstream& inputfile
 //will return Token
