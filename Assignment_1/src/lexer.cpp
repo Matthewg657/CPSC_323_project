@@ -162,3 +162,30 @@ bool isReal(const string& lexeme)
     }
     return state == 3;
 }
+
+bool isSeparator(char ch)
+{
+    return ch == '(' ||
+           ch == ')' ||
+           ch == '{' ||
+           ch == '}' ||
+           ch == ',' ||
+           ch == ';' ||
+           ch == '@';
+}
+
+bool isOperator(const string& lexeme)
+{
+    return lexeme == "=" ||
+    lexeme == "+" ||
+    lexeme == "-" ||
+    lexeme == "*" ||
+    lexeme == "/" ||
+    lexeme == "==" ||
+    lexeme == "!=" ||
+    lexeme == ">" ||
+    lexeme == "<" ||
+    lexeme == "<=" ||
+    lexeme == ">=";
+    
+}
