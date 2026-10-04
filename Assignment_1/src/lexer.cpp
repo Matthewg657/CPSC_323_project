@@ -189,3 +189,143 @@ bool isOperator(const string& lexeme)
     lexeme == ">=";
     
 }
+
+Token lexer(ifstream& inputFile)
+{
+    Token result;
+    char ch;
+
+    //skips whitespace
+    while (inputFile.get(ch))
+    {
+        if (!isspace(ch))
+        {
+            break;
+        }
+    }
+
+    if(inputFile.eof())
+    {
+        result.token = "EOF";
+        result.lexeme = "";
+        return result;
+    }
+
+    if(ch == '!')
+    {
+        while (inputFile.get(ch) && ch != '!')
+        {
+            // ignores evrything inside the comments
+        }
+        return lexer(inputFile);
+    }
+
+    if (isalpha(ch))
+    {
+        string lexeme;
+        lexeme += ch;
+
+        while(inputFile.get(ch))
+        {
+            if (isalnum(ch) || ch == '_')
+            {
+                lexeme += ch;
+            }
+            else
+            {
+                inputFile.unget();
+                break;
+            }
+        }
+
+        if (isKeyword(lexeme))
+        {
+            result.token = "keyword";
+        }
+        else
+        {
+            result.token="identifier";
+        }
+
+        result.lexeme = lexeme;
+        return result;
+    }
+
+    if (isdigit(ch)|| ch == '.')
+    {
+        string lexeme;
+        lexeme += ch;
+
+        bool hasDecimal = (ch == '.');
+
+        while (inputFile.get(ch))
+        {
+            if (isdigit(ch))
+            {
+                lexeme += ch;
+            }
+            else if (ch == '.' && !hasDecimal)
+            {
+                lexeme += ch;
+                hasDecimal = true;
+            }
+            else
+            {
+                inputFile.unget();
+                break;
+            } 
+        }
+        if (isReal(lexeme))
+            {
+                result.token = "real";   
+            }
+            else if(isInteger(lexeme))
+            {
+                result.token = "integer";
+            }
+            else 
+            {
+                result.token = "unknown";
+            }
+            result.lexeme = lexeme;
+            return result;
+    }
+    if (isSeparator(ch))
+    {
+        result.token = "separator";
+        result.lexeme = string(1, ch);
+        return result;
+    }
+    string op;
+    op += ch;
+
+    if (ch == '=' || ch == '<' || ch == '>' || ch == '!')
+    {
+        char next;
+        if (inputFile.get(next))
+        {
+            string twoCharOp = op + next;
+
+            if (isOperator(twoCharOp))
+            {
+                result.token = "operator";
+                result.lexeme = twoCharOp;
+                return result;
+            }
+            else{
+                inputFile.unget();
+            }
+        }
+    }
+    if (isOperator(op))
+    {
+        result.token = "operator";
+        result.lexeme = op;
+        return result;
+    }
+
+    result.token = "unknown";
+    result.lexeme = string(1,ch);
+
+    return result;
+    }
