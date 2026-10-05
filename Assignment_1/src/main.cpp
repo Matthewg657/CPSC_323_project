@@ -25,7 +25,7 @@ if (!outputFile.is_open())
 
 outputFile << left
 << setw(15) << "Token"
-<< “Lexeme” << endl;
+<< "Lexeme" << endl;
 
 
 outputFile << " -------------- " << endl;
